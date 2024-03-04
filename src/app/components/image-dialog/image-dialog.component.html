@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Image Upload Details</h1>
+<div mat-dialog-content>
+    <img [src]="imageUrl" alt="Uploaded Image" style="max-width: 100%; margin-bottom: 20px;">
+
+    <mat-form-field appearance="fill">
+        <mat-label>Image Name</mat-label>
+        <input matInput [(ngModel)]="imageName">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>File Type</mat-label>
+        <mat-select [(value)]="imageType">
+            <mat-option value="jpg">jpg</mat-option>
+            <mat-option value="png">png</mat-option>
+            <mat-option value="gif">gif</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Image Size</mat-label>
+        <input matInput [value]="formattedImageSize" readonly>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="true" class="close-btn">Close</button>
+</div>
