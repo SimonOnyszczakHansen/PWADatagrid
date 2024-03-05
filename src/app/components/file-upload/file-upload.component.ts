@@ -49,10 +49,9 @@ export class FileUploadComponent {
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
             console.log('Dialog result:', result);
-            this.dataService.updateImageData(result);
+            this.dataService.addImage(result);
           }
-        });
-  
+        });        
       };
       reader.readAsDataURL(file);
     }).catch(error => console.error("Error generating thumbnail:", error));

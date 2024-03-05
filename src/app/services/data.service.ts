@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 export interface ImageData {
   originalUrl: string;
@@ -12,25 +13,32 @@ export interface ImageData {
   providedIn: 'root',
 })
 export class DataService {
-  private images: ImageData[] = [];
+  private imagesSource = new BehaviorSubject<ImageData[]>([]);
+  images$ = this.imagesSource.asObservable();
 
   constructor() {}
 
   addImage(data: ImageData) {
-    this.images.push(data);
+    const currentValue = this.imagesSource.value;
+    const updatedValue = [...currentValue, data];
+    this.imagesSource.next(updatedValue);
+    console.log('Current images:', updatedValue);
   }
+  
 
   getImages(): ImageData[] {
-    return this.images;
+    return this.imagesSource.value;
   }
 
-  updateImageData(updatedImage: any): void {
-    const index = this.images.findIndex(img => img.name === updatedImage.name)
+  updateImageData(updatedImage: ImageData): void {
+    const images = this.imagesSource.value;
+    const index = images.findIndex(img => img.name === updatedImage.name);
     if (index !== -1) {
-      this.images[index] = updatedImage;
-    }else 
-    {
-      console.log("Image not found")
+      const updatedImages = [...images];
+      updatedImages[index] = updatedImage;
+      this.imagesSource.next(updatedImages);
+    } else {
+      console.log("Image not found");
     }
-  }
+  }  
 }
