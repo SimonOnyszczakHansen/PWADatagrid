@@ -1,15 +1,15 @@
 h1 {
-    color: #2E4053; /* Mørk Skifergrå */
+    color: #2E4053;
   }
   
   mat-form-field {
-    width: 100%; /* Sørg for at form-felter fylder containeren */
+    width: 100%;
   }
   
   .close-btn {
     padding: 10px 20px;
-    background-color: #2E4053; /* Mørk Skifergrå */
-    color: #ECF0F1; /* Cremehvid */
+    background-color: #2E4053;
+    color: #ECF0F1;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -17,8 +17,24 @@ h1 {
   }
   
   .close-btn:hover {
-    background-color: #ABB2B9; /* Lys Grå */
-    color: #2E4053; /* Mørk Skifergrå */
+    background-color: #ABB2B9;
+    color: #2E4053;
+  }
+
+  .confirm-btn {
+    padding: 10px 20px;
+    background-color: #2E4053;
+    color: #ECF0F1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-left: 70%;
+  }
+
+  .confirm-btn:hover {
+    background-color: #ABB2B9;
+    color: #2E4053;
   }
   
   

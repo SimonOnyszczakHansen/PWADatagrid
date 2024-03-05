@@ -1,0 +1,14 @@
+.image-entry {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.thumbnail {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
+}
+.image-info p {
+    margin: 0;
+    padding: 0;
+}

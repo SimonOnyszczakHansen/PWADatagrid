@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
-import { ImageDialogComponent } from '../image-dialog/image-dialog.component'; // Ensure the path is correct
+import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -17,7 +18,7 @@ import { ImageDialogComponent } from '../image-dialog/image-dialog.component'; /
 export class FileUploadComponent {
   selectedFiles?: FileList;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private dataService: DataService) {}
 
   onFileSelected(event: any): void {
     this.selectedFiles = event.target.files;
@@ -28,20 +29,53 @@ export class FileUploadComponent {
       console.log("No file selected");
       return;
     }
-  
+    
     const file = this.selectedFiles[0];
-    const reader = new FileReader();
-    reader.onload = (event: any) => {
-      // Assuming you are only handling the first file
-      this.dialog.open(ImageDialogComponent, {
-        data: {
-          imageUrl: event.target.result, // The content of the file as a base64 encoded string
-          imageName: file.name, // Default name from the file, user can edit in dialog
-          imageType: file.type, // File type (MIME type)
-          imageSize: file.size // File size in bytes
-        },
-      });
-    };
-    reader.readAsDataURL(file); // Convert the file to a data URL for preview
+    this.generateThumbnail(file).then(thumbnailDataUrl => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        const originalDataUrl = event.target.result; // The content of the file as a base64 encoded string
+        
+        const dialogRef = this.dialog.open(ImageDialogComponent, {
+          data: {
+            imageUrl: originalDataUrl,
+            imageName: file.name,
+            imageType: file.type,
+            imageSize: file.size,
+            thumbnailUrl: thumbnailDataUrl, // Assuming you want to display or use the thumbnail in the dialog as well
+          },
+        });
+  
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            console.log('Dialog result:', result);
+            this.dataService.updateImageData(result);
+          }
+        });
+  
+      };
+      reader.readAsDataURL(file);
+    }).catch(error => console.error("Error generating thumbnail:", error));
+  }
+  
+  generateThumbnail(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        const imgElement = document.createElement('img');
+        imgElement.src = event.target.result;
+        imgElement.onload = () => {
+          const canvas = document.createElement('canvas');
+          const scaleFactor = 0.1;
+          canvas.width = imgElement.width * scaleFactor;
+          canvas.height = imgElement.height * scaleFactor;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL());
+        };
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
   }
 }

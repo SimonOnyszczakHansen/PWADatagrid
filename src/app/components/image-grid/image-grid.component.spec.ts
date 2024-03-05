@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DaataComponent } from './daata.component';
+import { ImageGridComponent } from './image-grid.component';
 
-describe('DaataComponent', () => {
-  let component: DaataComponent;
-  let fixture: ComponentFixture<DaataComponent>;
+describe('ImageGridComponent', () => {
+  let component: ImageGridComponent;
+  let fixture: ComponentFixture<ImageGridComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DaataComponent]
+      imports: [ImageGridComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(DaataComponent);
+    fixture = TestBed.createComponent(ImageGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

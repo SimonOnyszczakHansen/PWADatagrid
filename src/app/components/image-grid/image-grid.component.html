@@ -1,0 +1,8 @@
+<div *ngFor="let image of images" class="image-entry">
+    <img [src]="image.thumbnailUrl" alt="Thumbnail" class="thumbnail">
+    <div class="image-info">
+        <p>Name: {{ image.name }}</p>
+        <p>Type: {{ image.type }}</p>
+        <p>Size: {{ image.size | number }} bytes</p>
+    </div>
+</div>
